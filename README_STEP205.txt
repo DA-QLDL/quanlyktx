@@ -1,0 +1,1 @@
+STEP205: Chỉ cập nhật thuc-don-moi.html. Nhập XLSX/XLS/XLSM/CSV nhiều NCC, hiển thị Tên món - Định lượng chuẩn. Admin mới nhìn thấy 4 nút quản lý (Nhập lại, Xem trên Cloud, Xóa Cloud, Lưu Cloud). Người xem có nút tải thực đơn Cloud riêng. Không chạy SQL.\n

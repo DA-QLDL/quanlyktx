@@ -1,0 +1,1 @@
+STEP204: cập nhật thuc-don-moi.html từ STEP203. Đọc Mặn (B/C day; C/D sáng; F/G trưa; I/J tối), Chay (A day; B/C sáng; E/F trưa; H/I tối); ghép các dòng tiếp theo không có tên món; xuất XLSX bằng SheetJS của app cha. Nút sao chép kết quả để dán vào Báo cáo suất ăn (không tự sửa số suất). Không đổi Supabase/PC.

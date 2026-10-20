@@ -1,0 +1,1 @@
+STEP202: Tích hợp đối chiếu cân thực tế từ file ktx-hoc-mon.html vào tiện ích Thực đơn mới. Cập nhật thuc-don-moi.html. Kết quả cân tạm được lưu localStorage theo thiết bị, không tự đồng bộ Cloud. Món/định lượng và Supabase giữ nguyên.

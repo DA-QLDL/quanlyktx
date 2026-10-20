@@ -1,0 +1,1 @@
+STEP201: giao diện Cơ sở vật chất dạng bảng tổng hợp giống ảnh tham khảo. Thay cosovatchat.html trên GitHub. Giữ nguyên localStorage key, nhập/xuất Excel và dữ liệu hiện có. Cloud phụ thuộc file utility-cloud.js của bản đang chạy. Dữ liệu không bị tự xoá. Nếu nút Import không hoạt động hãy đảm bảo excel-import.js hiện có trong GitHub.
