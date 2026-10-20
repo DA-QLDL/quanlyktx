@@ -1,0 +1,10 @@
+STEP209: SỬA LỖI NHẬP EXCEL THỰC ĐƠN
+
+1. Chỉ cần thay file thuc-don-moi.html trên nhánh thử nghiệm trước.
+2. Giữ nguyên toàn bộ file khác; không cần SQL.
+3. Chọn nhiều file cùng lúc, chọn NCC=Tất cả NCC để xem tổng hợp.
+4. Đọc .xlsx/.xlsm bằng bộ XML nội bộ kế thừa STEP204; .xls bằng SheetJS.
+5. Chỉ xem 3 cột STT, Tên món ăn, Định lượng chuẩn.
+6. Nhấn lưu Cloud sau khi đã xem đúng từng NCC/ngày/bữa.
+7. Đã kiểm thử logic đọc file Lim Dương.xlsx (19-25/10): 20/10 Trưa có 7 mặn, 7 chay.
+8. Chưa nghiệm thu với 7 file NCC thực tế của người dùng.
