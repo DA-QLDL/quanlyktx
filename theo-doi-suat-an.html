@@ -1,0 +1,142 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Thực đơn & định lượng · KTX Hóc Môn</title><style>
+:root{font-family:system-ui,"Segoe UI",sans-serif;background:#f0f5fd;color:#162f55}*{box-sizing:border-box}body{margin:0;padding:16px}main{max-width:1150px;margin:auto}h1{font-size:23px;margin:0 0 5px}.sub,.note{color:#647c9d;font-size:13px}.card{background:white;border:1px solid #d8e5f5;border-radius:15px;padding:16px;margin:12px 0;box-shadow:0 5px 20px #2144750d}.filters{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:10px;align-items:end}label{display:block;color:#37577c;font-size:12px;font-weight:700}input,select{display:block;width:100%;margin-top:6px;height:42px;border:1px solid #cdddf1;border-radius:10px;padding:0 10px;background:white;font:inherit;color:#203d68;min-width:0}button{cursor:pointer;font:inherit;font-weight:750;border-radius:10px;border:1px solid #c4d8f2;padding:10px 14px;background:white;color:#225aa7;min-height:42px}.primary{background:#2469e8;color:white;border-color:#2469e8}.upload-btn{display:inline-flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid #c4d8f2;background:#eff6ff;color:#225aa7;border-radius:10px;padding:10px 14px;font-size:13px;font-weight:750;min-height:42px}.upload-btn input{display:none}.actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}.hint{font-size:12px;color:#6c829e}.status{border-radius:10px;background:#eef5ff;padding:10px 12px;font-size:13px;margin-top:12px}.error{background:#fff0f0;color:#ad2542}.tabs{display:flex;gap:8px;margin:12px 0}.tabs button{flex:1}.tabs button.on{background:#2469e8;color:white}.head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}h2{font-size:18px;margin:0}.badge{background:#eaf5ec;color:#267049;border-radius:25px;font-size:12px;padding:6px 9px}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:14px}th{text-align:left;background:#e8f1fc;color:#24548b;padding:13px 12px;border-bottom:1px solid #cedeed}td{padding:13px 12px;border-bottom:1px solid #e7eff8}tbody tr:nth-child(even){background:#f8fbff}td:nth-child(2){font-weight:700}td:last-child{white-space:pre-wrap}.empty{padding:25px 10px;text-align:center;color:#657c9a}.editbox{display:none;border:1px solid #b9d4fb;background:#f6faff;border-radius:12px;padding:14px;margin-top:12px}.editbox.open{display:block}.editbox textarea{display:block;width:100%;min-height:170px;resize:vertical;border:1px solid #c5d7ee;border-radius:9px;padding:12px;font:14px/1.7 system-ui;margin-top:6px}.editbox .explain{font-size:12px;color:#536b8a;margin:8px 0}.editbox .actions{justify-content:flex-start}.sample{border:1px dashed #bdd4f1;background:#f8fbff;border-radius:12px;padding:12px 14px;margin-top:13px}.sample summary{cursor:pointer;font-size:13px;font-weight:750;color:#245aa1}.sample table{margin-top:10px}.sample caption{text-align:left;color:#9b5d12;margin:0 0 6px} @media(max-width:640px){body{padding:10px}.card{padding:12px}.filters{grid-template-columns:repeat(2,minmax(0,1fr))}.vendor{grid-column:1/-1}h1{font-size:21px}td,th{padding:11px 8px}.tabs button{font-size:13px}.actions button{width:100%}}
+</style></head><body><main>
+<h1>🍽️ Theo dõi suất ăn</h1><div class="sub">Xem tên món ăn và định lượng chuẩn · Thực đơn mặn / chay</div>
+<section class="card"><div class="filters"><label>Ngày ăn<input type="date" id="date"></label><label>Bữa ăn<select id="period"><option value="sang">Sáng</option><option value="trua" selected>Trưa</option><option value="chieu">Chiều</option></select></label><label class="vendor">Nhà cung cấp<select id="vendor"><option value="">Chọn nhà cung cấp</option></select></label></div><div class="actions"><button id="load" class="primary">Xem thực đơn</button><label id="uploadBox" class="upload-btn">📄 Chọn nhiều file Excel<input type="file" id="directFile" accept=".xlsx" multiple hidden></label><button id="saveDirect" hidden>☁ Lưu thực đơn đã xem lên Cloud</button><span class="hint" id="viewHint">Nhân viên chỉ xem; Quản trị hoặc Quản lý có thể cập nhật.</span></div><div id="status" class="status">Đang kết nối…</div><div id="batchResult" class="status" hidden></div></section>
+<section class="card"><div class="head"><h2 id="title">Thực đơn</h2><span class="badge">Chế độ chỉ xem</span></div><div class="tabs"><button data-kind="man" class="on">🍖 Thực đơn mặn</button><button data-kind="chay">🥬 Thực đơn chay</button></div><div id="editBox" class="editbox"><label>Nhập món ăn và định lượng (mỗi món một dòng)</label><textarea id="editor" placeholder="Thịt kho củ cải | Thịt 45–50g; củ cải 30–40g
+Canh rau | 250ml"></textarea><div class="explain">Định dạng: <b>Tên món | Định lượng</b>. Ví dụ: Cơm trắng | 280–300g. Nhập riêng danh sách Mặn và Chay bằng cách chọn tab tương ứng. Chỉ lưu khi nhấn “Lưu lên Cloud”.</div><div class="actions"><button class="primary" id="saveMenu">Lưu lên Cloud</button><button id="cancelEdit">Hủy</button></div></div><div class="tablewrap"><table><thead><tr><th style="width:54px">STT</th><th>Tên món ăn</th><th>Định lượng chuẩn</th></tr></thead><tbody id="rows"></tbody></table></div><div class="empty" id="empty">Chưa có thực đơn được cập nhật cho lựa chọn này.</div>
+<details class="sample" id="sample"><summary>Xem bảng mặn mẫu tham khảo từ ảnh anh cung cấp</summary><table><caption>Chỉ là mẫu tham khảo, không phải thực đơn đã xác nhận của ngày đang chọn.</caption><tbody id="sampleRows"></tbody></table></details></section>
+<p class="note">Thực đơn chính thức chỉ hiển thị khi đã có nguồn dữ liệu cho đúng ngày, bữa và nhà cung cấp. Dữ liệu Excel được xem trước trên thiết bị. Chỉ ghi lên Cloud khi người có quyền nhấn nút lưu.</p>
+</main><script src="./meal-xlsx-reader.js"></script><script>
+(()=>{'use strict';const $=x=>document.getElementById(x);const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));let kind='man',menu={man:[],chay:[]};const d=new Date();$('date').value=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
+const sample=[['Thịt kho củ cải','Thịt 45–50g; củ cải 30–40g'],['Cá đối chiên giòn','70–80g'],['Chả lụa xào rau củ','30–40g'],['Rau muống xào','70–80g'],['Canh laghim','250ml'],['Cơm trắng','280–300g'],['Chuối','90–100g']];$('sampleRows').innerHTML=sample.map((r,i)=>`<tr><td>${i+1}</td><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('');
+function info(t,bad=false){$('status').textContent=t;$('status').classList.toggle('error',bad)}
+function bridge(){const b=window.parent?.KTX_MEAL_BRIDGE;if(!b?.ready||!b?.client||!b?.session?.user)throw Error('Chưa có phiên đăng nhập để xem thực đơn.');return b}
+function render(){document.querySelectorAll('[data-kind]').forEach(x=>x.classList.toggle('on',x.dataset.kind===kind));$('title').textContent=(kind==='man'?'Mặn':'Chay')+' · '+($('period').selectedOptions[0]?.text||'')+' · '+$('date').value;const a=menu[kind];$('rows').innerHTML=a.map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.name)}</td><td>${esc(x.standard)}</td></tr>`).join('');$('empty').hidden=!!a.length}
+async function load(){let b;try{b=bridge()}catch(e){info(e.message,true);menu={man:[],chay:[]};render();return}const v=$('vendor').value;if(!v){info('Chọn nhà cung cấp để xem thực đơn.',true);menu={man:[],chay:[]};render();return}info('Đang tải thực đơn…');try{const {data,error}=await b.client.from('ktx_meal_menus').select('menu_type,dishes').eq('meal_date',$('date').value).eq('meal_period',$('period').value).eq('vendor',v);if(error)throw error;menu={man:[],chay:[]};for(const rec of data||[])if(['man','chay'].includes(rec.menu_type)&&Array.isArray(rec.dishes))menu[rec.menu_type]=rec.dishes.filter(x=>x&&x.name).map(x=>({name:String(x.name),standard:String(x.standard||'—')}));render();info(menu.man.length+menu.chay.length?`Đã tải: ${menu.man.length} món mặn, ${menu.chay.length} món chay.`:'Chưa cập nhật thực đơn cho ngày, bữa và NCC đang chọn.')}catch(e){menu={man:[],chay:[]};render();info('Không tải được thực đơn: '+(e.message||String(e)),true)}}
+function init(){try{const b=bridge();const allowed=['admin','manager'].includes(b.role);$('saveDirect').hidden=!allowed;document.getElementById('uploadBox').hidden=!allowed;const vendors=(b.vendors||[]).filter(Boolean);$('vendor').innerHTML='<option value="">Chọn nhà cung cấp</option>'+vendors.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');if(vendors.length===1)$('vendor').value=vendors[0];info('Chọn ngày, bữa và NCC rồi nhấn Xem thực đơn.');if(vendors.length===1)load()}catch(e){info(e.message,true)}}
+let editing=false;
+function toggleEditor(show){try{if(show&&!['admin','manager'].includes(bridge().role)){info('Tài khoản không có quyền cập nhật thực đơn.',true);return}}catch(e){info(e.message,true);return}editing=show;$('editBox').classList.toggle('open',show);$('edit').textContent=show?'Đang nhập thực đơn':'✎ Nhập / cập nhật thực đơn';if(show){$('editor').value=menu[kind].map(x=>x.name+' | '+(x.standard==='—'?'':x.standard)).join('\n');$('editor').focus()}}
+async function save(){const b=bridge(),v=$('vendor').value;if(!['admin','manager'].includes(b.role))return info('Không đủ quyền lưu.',true);if(!v||!$('date').value)return info('Phải chọn ngày và nhà cung cấp trước khi lưu.',true);const lines=$('editor').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);if(lines.length>60)return info('Tối đa 60 món ăn cho một bảng.',true);const dishes=[];for(let i=0;i<lines.length;i++){let pos=lines[i].indexOf('|');if(pos<1||pos===lines[i].length-1)return info('Dòng '+(i+1)+' chưa đúng dạng: Tên món | Định lượng.',true);const name=lines[i].slice(0,pos).trim(),standard=lines[i].slice(pos+1).trim();if(!name||!standard)return info('Dòng '+(i+1)+' cần có tên và định lượng.',true);dishes.push({name,standard})}if(!dishes.length)return info('Nhập ít nhất một món; không lưu danh sách rỗng.',true);
+if(!window.confirm('Cập nhật '+dishes.length+' món '+(kind==='man'?'mặn':'chay')+' cho '+v+' ngày '+$('date').value+'? Bản hiện tại của lựa chọn này sẽ được thay thế.'))return;
+$('saveMenu').disabled=true;info('Đang lưu thực đơn lên Cloud…');try{const payload={meal_date:$('date').value,meal_period:$('period').value,vendor:v,menu_type:kind,dishes,updated_at:new Date().toISOString(),updated_by:b.session.user.id};const {error}=await b.client.from('ktx_meal_menus').upsert(payload,{onConflict:'meal_date,meal_period,vendor,menu_type'});if(error)throw error;await load();toggleEditor(false);info('Đã cập nhật '+dishes.length+' món trên Cloud. Điện thoại và PC có thể xem cùng thực đơn.')}catch(e){info('Lỗi lưu Cloud: '+(e.message||String(e)),true)}finally{$('saveMenu').disabled=false}}
+
+// STEP187: Import a workbook directly in the viewer. This is independent of the weekly batch.
+let directLoaded=false;
+// STEP189: Only use the "Trọng lượng thành phẩm" value as standard serving weight.
+// No extrapolation from ingredient amounts or numeric fragments inside the dish name.
+const normalizeMealText=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').toLowerCase().replace(/\s+/g,' ').trim();
+const productionWeightHeader=s=>/trong\s*luong\s*(?:thanh\s*pham|tp)\b/.test(normalizeMealText(s));
+const measurePattern=/\b\d+(?:[.,]\d+)?\s*(?:[-–~]\s*\d+(?:[.,]\d+)?\s*)?(?:g|gram|kg|ml|lit|lít)\b/i;
+function explicitFinishedWeight(raw){
+ const txt=String(raw??'').trim();if(!txt)return '';
+ // Pure numeric cell means grams. Never treat dates or amounts as a weight.
+ if(/^\d+(?:[.,]\d+)?$/.test(txt)){const num=Number(txt.replace(',','.'));return num>0&&num<=5000?txt+'g':''}
+ const match=txt.match(measurePattern);return match?match[0].replace(/\s+/g,' ').trim():'';
+}
+// STEP191: Read each dish and its "Trọng lượng thành phẩm" from the same Excel row.
+// Supports sheet-specific column positions (e.g. Mặn lunch D/E, Chay lunch E/F).
+function readFinishedMenuRows(sheets, selectedDate, selectedPeriod){
+ const result={man:[],chay:[]},diagnostics=[];
+ const dayWanted=String(selectedDate).slice(8,10)+'/'+String(selectedDate).slice(5,7);
+ const yearWanted=String(selectedDate).slice(0,4);
+ const periods={sang:0,trua:1,chieu:2,toi:2};
+ const groupWanted=periods[selectedPeriod];
+ const clean=v=>String(v??'').replace(/\s+/g,' ').trim();
+ const headerName=v=>/^(mon|mon an|ten mon|ten mon an)$/.test(normalizeMealText(v));
+ for(const sheet of sheets){
+  const kind=/chay/i.test(normalizeMealText(sheet.name))?'chay':'man';
+  const rows=sheet.rows||[];
+  let columns=[],active=false,matchedDays=0,added=0;
+  const seen=new Set();
+  // Prefer headings defined over each meal section; the sheet may repeat those headings.
+  for(let i=0;i<rows.length;i++){
+   const row=rows[i]||[];
+   const pairs=[];
+   for(let c=0;c<row.length-1;c++){
+    if(headerName(row[c])&&productionWeightHeader(row[c+1]))pairs.push([c,c+1]);
+   }
+   if(pairs.length){columns=pairs;continue}
+   const lead=clean(row[0]),lower=normalizeMealText(lead);
+   // Date starts a new day block, and later blank leading cells belong to this block.
+   const m=lead.match(/(?:^|[^\d])(\d{1,2})\s*[\/.-]\s*(\d{1,2})(?:\s*[\/.-]\s*(\d{4}))?/);
+   if(m&&/(?:thu|chu nhat|\bcn\b|ngay)/.test(lower)){
+    const day=String(m[1]).padStart(2,'0')+'/'+String(m[2]).padStart(2,'0');
+    active=day===dayWanted&&(!m[3]||m[3]===yearWanted);
+    if(active)matchedDays++;
+   }
+   if(!active||groupWanted===undefined||!columns[groupWanted])continue;
+   const [nameCol,weightCol]=columns[groupWanted];
+   const name=clean(row[nameCol]);const rawWeight=clean(row[weightCol]);
+   if(!name||headerName(name)||/^(tong|ghi chu|ky ten|mon|thuc don)$/i.test(normalizeMealText(name)))continue;
+   const key=normalizeMealText(name);
+   if(seen.has(key))continue;
+   seen.add(key);
+   // Keep the FULL original finished-weight cell, including ingredient-specific ranges.
+   // Only allow meaningful non-empty quantities, not date or table headings.
+   let standard='Chưa có trọng lượng thành phẩm trong file Excel';
+   if(rawWeight&&(/\d/.test(rawWeight))&&!productionWeightHeader(rawWeight))standard=rawWeight;
+   result[kind].push({name,standard});added++;
+  }
+  diagnostics.push(`${sheet.name}: ${matchedDays?'đúng ngày':'không thấy ngày'}; ${columns.length} nhóm cột; ${added} món ${kind==='man'?'mặn':'chay'}`);
+ }
+ return {dishes:result,diagnostics};
+}
+$('directFile').addEventListener('change',async e=>{
+ const files=Array.from(e.target.files||[]);e.target.value='';if(!files.length)return;
+ directLoaded=false;const batch=$('batchResult');batch.hidden=false;batch.textContent='Đang đọc '+files.length+' file Excel…';
+ let b;try{b=bridge()}catch(err){info(err.message,true);return}
+ const iso=$('date').value,period=$('period').value,vendor=$('vendor').value,parser=b.parseWeek;
+ if(typeof parser!=='function')return info('Chưa tìm thấy bộ xử lý thực đơn tuần trong ứng dụng.',true);
+ if(!vendor)return info('Chọn nhà cung cấp trước khi nhập Excel.',true);
+ const good=[],bad=[],combined={man:new Map(),chay:new Map()};
+ const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/đ/g,'d').replace(/[^a-z0-9]+/g,' ').trim();
+ const vendorNames=b.vendors||[];
+ for(let i=0;i<files.length;i++){
+  const f=files[i];batch.textContent='Đang đọc '+(i+1)+'/'+files.length+': '+f.name;
+  try{
+   const sheets=await window.KTX_READ_XLSX(f);
+   const detected=vendorNames.filter(n=>norm(f.name+' '+sheets.map(x=>x.name).join(' ')).includes(norm(n)));
+   if(detected.length===1 && detected[0]!==vendor){bad.push(f.name+': phát hiện NCC '+detected[0]+' khác NCC đang chọn '+vendor);continue}
+   const direct=readFinishedMenuRows(sheets,iso,period);
+   let matched=0;
+   for(const type of ['man','chay'])for(const item of direct.dishes[type]){
+    const key=norm(item.name);if(!key)continue;
+    const old=combined[type].get(key);
+    if(!old||old.standard.startsWith('Chưa có'))combined[type].set(key,item);
+    matched++;
+   }
+   // Compatibility fallback for weekly-name-only files, only when no structured rows matched.
+   if(!matched){for(const sheet of sheets){const r=parser(sheet.rows,sheet.name);if(!r)continue;
+     const list=r.days?.[iso]?.[period]||[];
+     for(const name of list){const key=norm(name);if(key&&!combined[r.kind].has(key)){combined[r.kind].set(key,{name:String(name),standard:'Chưa có trọng lượng thành phẩm trong file Excel'});matched++}}
+    }}
+   if(matched)good.push(f.name+' ('+matched+' món; '+direct.diagnostics.join(' | ')+')');
+   else bad.push(f.name+': không tìm thấy dữ liệu cho '+iso+' / '+period+'; '+direct.diagnostics.join(' | '));
+  }catch(err){bad.push(f.name+': '+(err.message||err))}
+ }
+ const found={man:[...combined.man.values()],chay:[...combined.chay.values()]};
+ batch.innerHTML='<b>Đọc thành công: '+good.length+'/'+files.length+' file</b>'+good.map(t=>'<div>✓ '+esc(t)+'</div>').join('')+(bad.length?'<b style="display:block;margin-top:8px;color:#b32d40">Cần kiểm tra: '+bad.length+' file</b>'+bad.map(t=>'<div>• '+esc(t)+'</div>').join(''):'');
+ if(!found.man.length&&!found.chay.length){info('Không tìm thấy món hợp lệ để hiển thị. Hãy kiểm tra ngày, bữa, NCC và định dạng file.',true);return}
+ menu=found;directLoaded=true;render();
+ info('Đã gộp '+found.man.length+' món mặn, '+found.chay.length+' món chay từ '+good.length+' file. Chưa lưu Cloud; kiểm tra bảng rồi nhấn Lưu thực đơn đã xem lên Cloud.');
+});
+$('saveDirect').addEventListener('click',async()=>{
+ if(!directLoaded)return info('Hãy chọn file Excel và kiểm tra thực đơn trước khi lưu.',true);
+ let b;try{b=bridge()}catch(err){return info(err.message,true)}
+ if(!['admin','manager'].includes(b.role))return info('Chỉ Quản trị / Quản lý được lưu.',true);
+ const vendor=$('vendor').value;if(!vendor)return info('Chọn NCC trước khi lưu.',true);
+ const toWrite=['man','chay'].filter(k=>menu[k].length);if(!toWrite.length)return info('Không có món để lưu.',true);
+ if(!confirm('Lưu '+toWrite.length+' bảng thực đơn của '+vendor+' ngày '+$('date').value+' lên Cloud?'))return;
+ const btn=$('saveDirect');btn.disabled=true;
+ try{
+  for(const k of toWrite){const payload={meal_date:$('date').value,meal_period:$('period').value,vendor,menu_type:k,dishes:menu[k],updated_by:b.session.user.id,updated_at:new Date().toISOString()};const {error}=await b.client.from('ktx_meal_menus').upsert(payload,{onConflict:'meal_date,meal_period,vendor,menu_type'});if(error)throw error}
+  directLoaded=false;info('Đã lưu '+toWrite.length+' bảng lên Supabase. Hãy mở cùng ngày/bữa/NCC trên điện thoại để kiểm tra.');
+ }catch(err){info('Không thể lưu Cloud: '+(err.message||err),true)}finally{btn.disabled=false}
+});
+
+$('cancelEdit').onclick=()=>toggleEditor(false);$('saveMenu').onclick=save;
+window.openMealMenuEditor=()=>{info('Vui lòng chọn file Excel tại mục Báo cáo suất ăn.',true)};
+$('load').onclick=load;for(const id of ['date','period','vendor'])$(id).addEventListener('change',()=>{toggleEditor(false);load()});document.querySelectorAll('[data-kind]').forEach(b=>b.onclick=()=>{kind=b.dataset.kind;render();if(editing)toggleEditor(true)});render();setTimeout(init,650);
+})();
+</script></body></html>
