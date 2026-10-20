@@ -1,3 +1,4 @@
+
 {
   "cleanUrls": false,
   "trailingSlash": false,
@@ -6,7 +7,7 @@
       "handle": "filesystem"
     },
     {
-      "src": "/.*",
+      "src": "/",
       "dest": "/index.html"
     }
   ],
